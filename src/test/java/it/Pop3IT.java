@@ -51,16 +51,22 @@ public class Pop3IT {
 	@Test
 	public void getMails() throws IOException, MessagingException,
 			UserException, InterruptedException {
+		// create user on mail server
 		GreenMailUser user = mailServer.setUser(EMAIL_USER_ADDRESS, USER_NAME,
 				USER_PASSWORD);
+
+		// create an e-mail message using javax.mail ..
 		MimeMessage message = new MimeMessage((Session) null);
 		message.setFrom(new InternetAddress(EMAIL_TO));
 		message.addRecipient(Message.RecipientType.TO, new InternetAddress(
 				EMAIL_USER_ADDRESS));
 		message.setSubject(EMAIL_SUBJECT);
 		message.setText(EMAIL_TEXT);
+
+		// use greenmail to store the message
 		user.deliver(message);
 
+		// fetch the e-mail from pop3 using javax.mail ..
 		Properties props = new Properties();
 		props.setProperty("mail.pop3.connectiontimeout", "5000");
 		Session session = Session.getInstance(props);
